@@ -5,96 +5,252 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Cukai Pendapatan Malaysia & Estimator PCB Percuma</title>
     <meta name="description" content="Kira potongan PCB (Potongan Cukai Bulanan), caruman KWSP, dan anggaran cukai pendapatan tahunan Malaysia dengan mudah secara online.">
-    <!-- Tailwind CSS for styling -->
-    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #0b1329;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --brand-teal: #2dd4bf;
+            --brand-emerald: #34d399;
+            --brand-amber: #f59e0b;
+            --border-color: #334155;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin: 24px 0;
+            max-width: 500px;
+        }
+        header h1 {
+            color: var(--brand-teal);
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        main {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        input {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: white;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .hint {
+            display: block;
+            font-size: 0.65rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        button {
+            width: 100%;
+            background-color: var(--brand-teal);
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 0.875rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .ad-space {
+            margin: 24px 0;
+            padding: 16px;
+            background-color: var(--bg-input);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+        }
+        #results {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        #results.hidden {
+            display: none;
+        }
+        .result-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--brand-teal);
+            margin-bottom: 12px;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.875rem;
+        }
+        .result-row span:first-child {
+            color: var(--text-muted);
+        }
+        .result-row span:last-child {
+            font-family: monospace;
+            font-weight: 700;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+        }
+        .total-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .total-value {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--brand-emerald);
+        }
+        .seo-section {
+            max-width: 500px;
+            width: 100%;
+            margin: 32px 0;
+            background-color: #1e293b66;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #33415540;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .seo-section h2 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .seo-section p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        footer {
+            width: 100%;
+            background-color: var(--bg-input);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #475569;
+            border-top: 1px solid var(--border-color);
+            position: sticky;
+            bottom: 0;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
-<body class="bg-gray-950 text-gray-100 font-sans min-h-screen flex flex-col items-center justify-between p-4">
-
-    <!-- HEADER / SEO INTENT TITLE -->
-    <header class="text-center my-6 max-w-xl">
-        <h1 class="text-3xl font-black tracking-tight text-teal-400 mb-2 uppercase drop-shadow-[0_0_10px_rgba(45,212,191,0.3)]">Kalkulator Cukai & PCB</h1>
-        <p class="text-gray-400 text-sm">Semak anggaran potongan bulanan, caruman KWSP (11%), dan pelepasan cukai anda dengan pantas.</p>
+<body>
+    <header>
+        <h1>Kalkulator Cukai & PCB</h1>
+        <p>Semak anggaran potongan bulanan, caruman KWSP (11%), dan pelepasan cukai anda dengan pantas.</p>
     </header>
-
-    <!-- MAIN CALCULATOR CONTAINER -->
-    <main class="w-full max-w-lg bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-        <!-- Input Form -->
-        <div class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Gaji Bulanan Kasar (RM)</label>
-                <input type="number" id="monthlySalary" placeholder="Contoh: 5000" class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2.5 text-white font-mono focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition">
-            </div>
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Pelepasan Cukai Individu Asas (RM)</label>
-                <input type="number" id="taxRelief" value="750" class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-2.5 text-white font-mono focus:outline-none focus:border-teal-400 transition">
-                <span class="text-[10px] text-gray-500 mt-1 block">*Pelepasan asas individu diselaraskan automatik sebanyak RM9,000 setahun (RM750/bulan).</span>
-            </div>
-            <button onclick="calculateTax()" class="w-full bg-teal-500 hover:bg-teal-400 text-gray-950 font-black uppercase tracking-wider py-3.5 px-4 rounded-lg transition transform active:scale-95 shadow-[0_0_15px_rgba(45,212,191,0.4)] mt-2">
-                Kira Anggaran Sekarang
-            </button>
+    <main>
+        <div class="form-group">
+            <label for="monthlySalary">Gaji Bulanan Kasar (RM)</label>
+            <input type="number" id="monthlySalary" placeholder="Contoh: 5000">
         </div>
-
-        <!-- AD NETWORK PLACEHOLDER (Google AdSense Setup Layout) -->
-        <div class="my-6 p-4 bg-gray-950 border border-dashed border-gray-800 rounded text-center text-[10px] font-bold text-gray-600 tracking-widest uppercase">
-            Ruang Iklan Google AdSense (Responsive Banner)
+        <div class="form-group">
+            <label for="taxRelief">Pelepasan Cukai Individu Asas (RM)</label>
+            <input type="number" id="taxRelief" value="750">
+            <span class="hint">*Pelepasan asas individu diselaraskan automatik sebanyak RM9,000 setahun (RM750/bulan).</span>
         </div>
-
-        <!-- RESULTS MONITOR DISPLAY -->
-        <div id="results" class="hidden border-t border-gray-800 pt-5 space-y-3">
-            <h3 class="text-sm font-bold uppercase tracking-widest text-teal-400 mb-2">Penyata Ringkasan:</h3>
-            <div class="flex justify-between border-b border-gray-850 pb-2 text-sm">
-                <span class="text-gray-400">Gaji Bulanan Bersih (Lepas KWSP):</span>
-                <span id="monthlyNet" class="font-mono text-white">RM 0.00</span>
+        <button onclick="calculateTax()">Kira Anggaran Sekarang</button>
+        <div class="ad-space">Ruang Iklan Google AdSense (Responsive Banner)</div>
+        <div id="results" class="hidden">
+            <div class="result-title">Penyata Ringkasan:</div>
+            <div class="result-row">
+                <span>Gaji Bulanan Bersih (Lepas KWSP):</span>
+                <span id="monthlyNet" style="color: white;">RM 0.00</span>
             </div>
-            <div class="flex justify-between border-b border-gray-850 pb-2 text-sm">
-                <span class="text-gray-400">Potongan KWSP Sebulan (11%):</span>
-                <span id="monthlyEPF" class="font-mono text-amber-500">RM 0.00</span>
+            <div class="result-row">
+                <span>Potongan KWSP Sebulan (11%):</span>
+                <span id="monthlyEPF" style="color: var(--brand-amber);">RM 0.00</span>
             </div>
-            <div class="flex justify-between border-b border-gray-850 pb-2 text-sm">
-                <span class="text-gray-400">Pendapatan Bercukai Setahun:</span>
-                <span id="taxableIncome" class="font-mono text-white">RM 0.00</span>
+            <div class="result-row">
+                <span>Pendapatan Bercukai Setahun:</span>
+                <span id="taxableIncome" style="color: white;">RM 0.00</span>
             </div>
-            <div class="flex justify-between pt-2 items-center">
-                <span class="text-gray-200 text-xs font-bold uppercase tracking-wider">Anggaran PCB Bulanan:</span>
-                <span id="monthlyPCB" class="font-mono text-2xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.3)]">RM 0.00</span>
+            <div class="total-row">
+                <span class="total-label">Anggaran PCB Bulanan:</span>
+                <span id="monthlyPCB" class="total-value">RM 0.00</span>
             </div>
         </div>
     </main>
-
-    <!-- PROGRAMMATIC SEO BLOCKS (For Search Engines to index context) -->
-    <section class="max-w-xl w-full my-8 bg-gray-900/40 p-5 rounded-xl border border-gray-900 text-xs text-gray-400 space-y-3">
-        <h2 class="text-sm font-bold text-gray-300 uppercase tracking-wider">Mengenai Potongan Cukai Bulanan (PCB) & KWSP</h2>
-        <p><strong>Apakah fungsi kalkulator ini?</strong> Alat web utility ini membantu pekerja swasta dan penjawat awam di Malaysia mengira anggaran Potongan Cukai Bulanan (PCB) yang ditolak oleh LHDNM (Lembaga Hasil Dalam Negeri) bersama-sama caruman KWSP bahagian pekerja.</p>
+    <section class="seo-section">
+        <h2>Mengenai Potongan Cukai Bulanan (PCB) & KWSP</h2>
+        <p><strong>Apakah fungsi kalkulator ini?</strong> Alat web utility ini membantu pekerja swasta dan penjawat awam di Malaysia mengira anggaran Potongan Cukai Bulanan (PCB) yang ditolak oleh LHDNM bersama-sama caruman KWSP bahagian pekerja.</p>
         <p><strong>Bagaimanakah cukai pendapatan progresif dikira?</strong> Kadar cukai adalah berdasarkan jumlah amaun tahunan kasar setelah ditolak jumlah insentif pelepasan cukai individu serta caruman simpanan wajib persaraan seperti KWSP/EPF.</p>
     </section>
-
-    <!-- STICKY ANCHOR AD FOOTER -->
-    <div class="w-full bg-gray-950 p-2 text-center text-[10px] font-bold text-gray-700 border-t border-gray-900 sticky bottom-0 tracking-wider uppercase">
-        Zon Banner Sauh Sematan (Sticky Bottom Ad Space)
-    </div>
-
-    <!-- CALCULATION ALGORITHMS -->
+    <footer>Zon Banner Sauh Sematan (Sticky Bottom Ad Space)</footer>
     <script>
         function calculateTax() {
             const salary = parseFloat(document.getElementById('monthlySalary').value) || 0;
             const relief = parseFloat(document.getElementById('taxRelief').value) || 0;
-            
-            if (salary <= 0) return alert("Sila masukkan jumlah gaji bulanan kasar dengan betul.");
-
-            // Calculate standard statutory deductions
+            if (salary <= 0) {
+                return alert("Sila masukkan jumlah gaji bulanan kasar dengan betul.");
+            }
             const epfRate = 0.11;
             const monthlyEPF = salary * epfRate;
             const monthlyNet = salary - monthlyEPF;
-
             const annualGross = salary * 12;
             const annualEPF = monthlyEPF * 12;
             const annualRelief = relief * 12;
-            
-            // Taxable Income = Gross Salary - Base Individual Relief - Annual EPF Contribution
             let taxableIncome = annualGross - annualRelief - annualEPF;
-            if (taxableIncome < 0) taxableIncome = 0;
-
-            // Progressive Tax Bracket algorithm configuration for Malaysia Inland Revenue criteria
+            if (taxableIncome < 0) {
+                taxableIncome = 0;
+            }
             let annualTax = 0;
             if (taxableIncome > 100000) {
                 annualTax = (taxableIncome - 100000) * 0.21 + 10900;
@@ -107,15 +263,15 @@
             } else if (taxableIncome > 20000) {
                 annualTax = (taxableIncome - 20000) * 0.01;
             }
-
             const estimatedPCB = annualTax / 12;
-
-            // Render calculations into UI monitors
-            document.getElementById('monthlyNet').innerText = `RM ${monthlyNet.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-            document.getElementById('monthlyEPF').innerText = `RM ${monthlyEPF.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-            document.getElementById('taxableIncome').innerText = `RM ${taxableIncome.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-            document.getElementById('monthlyPCB').innerText = `RM ${estimatedPCB.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-            
+            const netSelector = document.getElementById('monthlyNet');
+            const epfSelector = document.getElementById('monthlyEPF');
+            const incomeSelector = document.getElementById('taxableIncome');
+            const pcbSelector = document.getElementById('monthlyPCB');
+            netSelector.innerText = "RM " + monthlyNet.toLocaleString('en-MY', {minimumFractionDigits: 2});
+            epfSelector.innerText = "RM " + monthlyEPF.toLocaleString('en-MY', {minimumFractionDigits: 2});
+            incomeSelector.innerText = "RM " + taxableIncome.toLocaleString('en-MY', {minimumFractionDigits: 2});
+            pcbSelector.innerText = "RM " + estimatedPCB.toLocaleString('en-MY', {minimumFractionDigits: 2});
             document.getElementById('results').classList.remove('hidden');
         }
     </script>
